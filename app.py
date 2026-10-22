@@ -16,7 +16,7 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Inches, Pt
 
 BASE_DIR = Path(__file__).resolve().parent
-TEMPLATE_PATH = BASE_DIR / "template" / "sih2026_nomination_template.docx"
+TEMPLATE_PATH = BASE_DIR / "template" / "template.docx"
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024
