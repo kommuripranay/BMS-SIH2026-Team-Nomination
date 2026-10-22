@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BMS SIH 2026 — Team Nomination</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="page">
+  <section class="card">
+    <header>
+      <div class="eyebrow">BMS SIH 2026</div>
+      <h1>Team Nomination</h1>
+      <p>Enter your team details. Your completed DOCX, PDF and TXT files will be bundled into one ZIP for submission.</p>
+    </header>
+
+    {% if errors %}
+    <div class="errors">
+      <strong>Please correct the following:</strong>
+      <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+      <div>Your entered information has not been cleared.</div>
+    </div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('generate') }}" id="nominationForm">
+      <section class="section">
+        <h2>Team information</h2>
+        <div class="grid team-grid">
+          <label>Team Name<input name="team_name" value="{{ form.get('team_name','') if form else '' }}" placeholder="e.g. Subwave Surfers" required></label>
+          <label>Team ID<div class="prefix-input"><span>BMS_SIH2026_</span><input name="team_id" value="{{ form.get('team_id','') if form else '' }}" inputmode="numeric" pattern="[0-9]+" placeholder="65" required></div></label>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Participants</h2>
+        <p class="hint">Enter the name as per government records. Email must be a BMSCE college email. Mobile number must be exactly 10 digits.</p>
+        {% for i in range(6) %}
+        <fieldset>
+          <legend>{{ 'Team Leader' if i == 0 else 'Team Member ' ~ i }}</legend>
+          <div class="grid participant-grid">
+            <label class="wide">Name<input name="name_{{ i }}" value="{{ form.get('name_' ~ i,'') if form else '' }}" required></label>
+            <label>Gender<select name="gender_{{ i }}" required><option value="">Select</option><option value="M" {% if form and form.get('gender_' ~ i)=='M' %}selected{% endif %}>M</option><option value="F" {% if form and form.get('gender_' ~ i)=='F' %}selected{% endif %}>F</option></select></label>
+            <label class="wide">College Email<input name="email_{{ i }}" value="{{ form.get('email_' ~ i,'') if form else '' }}" placeholder="name.aa00@bmsce.ac.in" required></label>
+            <label>Mobile No.<input name="mobile_{{ i }}" value="{{ form.get('mobile_' ~ i,'') if form else '' }}" inputmode="numeric" maxlength="10" required></label>
+            <label>Stream<input name="stream_{{ i }}" value="{{ form.get('stream_' ~ i,'') if form else '' }}" placeholder="CSE / ECE / ..." maxlength="6" required></label>
+            <label>Academic Year<select name="year_{{ i }}" required><option value="">Select</option>{% for y in ['1st','2nd','3rd','4th'] %}<option value="{{ y }}" {% if form and form.get('year_' ~ i)==y %}selected{% endif %}>{{ y }}</option>{% endfor %}</select></label>
+          </div>
+        </fieldset>
+        {% endfor %}
+      </section>
+
+      <button class="generate" type="submit">Generate Submission ZIP</button>
+      <p class="footnote">The ZIP contains the DOCX, PDF and TXT versions of your submission.</p>
+    </form>
+  </section>
+</main>
+</body>
+</html>
